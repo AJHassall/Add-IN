@@ -70,7 +70,7 @@ function makeServiceRequest() {
     // Translate the attachment details into a form easily understood by WCF.
     for (var i = 0; i < Office.context.mailbox.item.attachments.length; i++) {
         attachment = Office.context.mailbox.item.attachments[i];
-        attachment = attachment._data$p$0 || attachment.$0_0;
+        
 
         if (attachment !== undefined) {
             serviceRequest.attachments[i] = JSON.parse(JSON.stringify(attachment));
