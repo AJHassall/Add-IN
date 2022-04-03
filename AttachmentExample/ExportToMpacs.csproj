@@ -7,8 +7,8 @@
     <ProjectGuid>{570719B2-C4DD-489D-8248-E29B35A862F9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AttachmentExample</RootNamespace>
-    <AssemblyName>AttachmentExample</AssemblyName>
+    <RootNamespace>ExportToMpacs</RootNamespace>
+    <AssemblyName>ExportToMpacs</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetOfficeVersion>15.0</TargetOfficeVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,9 +49,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AttachmentExampleWeb\AttachmentExampleWeb.csproj">
+    <ProjectReference Include="..\AttachmentExampleWeb\ExportToMpacsWeb.csproj">
       <Project>{5182DE57-3136-4586-B53A-B3966BBCB3C4}</Project>
-      <Name>AttachmentExampleWeb</Name>
+      <Name>ExportToMpacsWeb</Name>
       <Private>True</Private>
       <RoleType>Web</RoleType>
       <OutputItemType>SharePointWebProjectOutput</OutputItemType>
