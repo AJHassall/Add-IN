@@ -7,10 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Http;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace AttachmentsService.Controllers
 {
@@ -74,20 +76,24 @@ namespace AttachmentsService.Controllers
                 {
                     Stream responseStream = webResponse.GetResponseStream();
 
-                    XmlDocument xmlDocument = new XmlDocument();
-                    xmlDocument.Load(responseStream);
+                    var responseEnvelope = XElement.Load(responseStream);
 
                     // This method simply writes the XML document to the
                     // trace output. Your service would perform its
                     // processing here.
-                    Trace.Write(xmlDocument.InnerXml);
 
+                    if (responseEnvelope != null)
+                    {
+                        var processResult = ProcessXmlResponse(responseEnvelope);
+                        attachmentNames.Add(string.Format("{0} {1}", attachment.name, processResult));
+
+                    }
                     // Close the response stream.
                     responseStream.Close();
                     webResponse.Close();
 
                     processedCount++;
-                    attachmentNames.Add(attachment.name);
+                    //attachmentNames.Add(attachment.name);
                 }
 
             }
@@ -97,7 +103,94 @@ namespace AttachmentsService.Controllers
 
             return response;
         }
+        // This method processes the response from the Exchange server.
+        // In your application the bulk of the processing occurs here.
+        private string ProcessXmlResponse(XElement responseEnvelope)
+        {
+            // First, check the response for web service errors.
+            var errorCodes = from errorCode in responseEnvelope.Descendants
+                              ("{http://schemas.microsoft.com/exchange/services/2006/messages}ResponseCode")
+                             select errorCode;
+            // Return the first error code found.
+            foreach (var errorCode in errorCodes)
+            {
+                if (errorCode.Value != "NoError")
+                {
+                    return string.Format("Could not process result. Error: {0}", errorCode.Value);
+                }
+            }
 
+            // No errors found, proceed with processing the content.
+            // First, get and process file attachments.
+            var fileAttachments = from fileAttachment in responseEnvelope.Descendants
+                              ("{http://schemas.microsoft.com/exchange/services/2006/types}FileAttachment")
+                                  select fileAttachment;
+            foreach (var fileAttachment in fileAttachments)
+            {
+                var fileContent = fileAttachment.Element("{http://schemas.microsoft.com/exchange/services/2006/types}Content");
+                var fileData = System.Convert.FromBase64String(fileContent.Value);
+                var s = new MemoryStream(fileData);
+                // Process the file attachment here.
+            }
+
+            // Second, get and process item attachments.
+            var itemAttachments = from itemAttachment in responseEnvelope.Descendants
+                                  ("{http://schemas.microsoft.com/exchange/services/2006/types}ItemAttachment")
+                                  select itemAttachment;
+            foreach (var itemAttachment in itemAttachments)
+            {
+                var message = itemAttachment.Element("{http://schemas.microsoft.com/exchange/services/2006/types}Message");
+                if (message != null)
+                {
+                    // Process a message here.
+                    break;
+                }
+                var calendarItem = itemAttachment.Element("{http://schemas.microsoft.com/exchange/services/2006/types}CalendarItem");
+                if (calendarItem != null)
+                {
+                    // Process calendar item here.
+                    break;
+                }
+                var contact = itemAttachment.Element("{http://schemas.microsoft.com/exchange/services/2006/types}Contact");
+                if (contact != null)
+                {
+                    // Process contact here.
+                    break;
+                }
+                var task = itemAttachment.Element("{http://schemas.microsoft.com/exchange/services/2006/types}Tontact");
+                if (task != null)
+                {
+                    // Process task here.
+                    break;
+                }
+                var meetingMessage = itemAttachment.Element("{http://schemas.microsoft.com/exchange/services/2006/types}MeetingMessage");
+                if (meetingMessage != null)
+                {
+                    // Process meeting message here.
+                    break;
+                }
+                var meetingRequest = itemAttachment.Element("{http://schemas.microsoft.com/exchange/services/2006/types}MeetingRequest");
+                if (meetingRequest != null)
+                {
+                    // Process meeting request here.
+                    break;
+                }
+                var meetingResponse = itemAttachment.Element("{http://schemas.microsoft.com/exchange/services/2006/types}MeetingResponse");
+                if (meetingResponse != null)
+                {
+                    // Process meeting response here.
+                    break;
+                }
+                var meetingCancellation = itemAttachment.Element("{http://schemas.microsoft.com/exchange/services/2006/types}MeetingCancellation");
+                if (meetingCancellation != null)
+                {
+                    // Process meeting cancellation here.
+                    break;
+                }
+            }
+
+            return string.Empty;
+        }
         private const string GetAttachmentSoapRequest =
     @"<?xml version=""1.0"" encoding=""utf-8""?>
 <soap:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
