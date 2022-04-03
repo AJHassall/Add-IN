@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttachmentExample", "AttachmentExample\AttachmentExample.csproj", "{570719B2-C4DD-489D-8248-E29B35A862F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportToMpacs", "AttachmentExample\ExportToMpacs.csproj", "{570719B2-C4DD-489D-8248-E29B35A862F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttachmentExampleWeb", "AttachmentExampleWeb\AttachmentExampleWeb.csproj", "{5182DE57-3136-4586-B53A-B3966BBCB3C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportToMpacsWeb", "AttachmentExampleWeb\ExportToMpacsWeb.csproj", "{5182DE57-3136-4586-B53A-B3966BBCB3C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttachmentExampleService", "AttachmentExampleService\AttachmentExampleService.csproj", "{655B6294-AF6F-4DAC-BFFD-80B0222B0030}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportToMpacsService", "AttachmentExampleService\ExportToMpacsService.csproj", "{655B6294-AF6F-4DAC-BFFD-80B0222B0030}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,5 +32,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36382EE1-3F98-4D2C-B116-B1466B7B78EA}
 	EndGlobalSection
 EndGlobal

@@ -34,7 +34,10 @@ namespace AttachmentsService.Controllers
 
             return response;
         }
-
+        private void UploadToMpacs()
+        {
+            string jsonString = "{\"ttEmail\":[";
+        }
         // This method does the work of making an Exchange Web Services (EWS) request to get the 
         // attachments from the Exchange server. This implementation makes an individual
         // request for each attachment, and returns the count of attachments processed.
